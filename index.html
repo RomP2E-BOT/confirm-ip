@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Your IP</title>
+    <script>
+        async function confirmIP(token) {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                const userIP = data.ip;
+
+                const confirmResponse = await fetch('https://yourdomain.com/api/confirm-ip', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token, ip: userIP })
+                });
+
+                const result = await confirmResponse.text();
+                document.getElementById('message').innerText = result;
+            } catch (error) {
+                console.error('Error confirming IP:', error);
+                document.getElementById('message').innerText = '❌ Error confirming your IP. Please try again later.';
+            }
+        }
+
+        window.onload = () => {
+            const params = new URLSearchParams(window.location.search);
+            const token = params.get('token');
+            if (token) {
+                confirmIP(token);
+            } else {
+                document.getElementById('message').innerText = '❌ Invalid token.';
+            }
+        };
+    </script>
+</head>
+<body>
+    <h1>Confirm Your IP Address</h1>
+    <p id="message">Please wait...</p>
+</body>
+</html>
