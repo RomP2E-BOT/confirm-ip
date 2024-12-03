@@ -13,7 +13,7 @@
             const userIP = data.ip;
 
            
-            const confirmResponse = await fetch('http://110.168.238.28:3000/api/confirm-ip', { 
+            const confirmResponse = await fetch('http://194.233.83.84:3000/api/confirm-ip', { 
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ token, ip: userIP })
